@@ -1,0 +1,25 @@
+.div-login-main {
+  background-color: #fff;
+  border-radius: 12px;
+
+  box-shadow: 4px 8px 24px #848795;
+  padding: 16px;
+  width: auto;
+}
+.input {
+  background-color: #c8d9e6;
+  border-radius: 12px;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+p {
+  margin: 0;
+}
+
+.user-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
