@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./style/login.css";
+import logo from "./assets/logo.tiff";
 
 export default function LoginAuth() {
   return (
     <div className="div-login-main">
-      <h1>Login</h1>
       <LoginInput />
       <p>Already have an account?</p>
     </div>
@@ -25,38 +25,47 @@ function LoginInput() {
   };
 
   return (
-    <form className="input-form" onSubmit={handleSubmit}>
-      <label className="user-inputs">
-        <p>Username:</p>
-        <input
-          className="input"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          placeholder="Enter your username"
-        />
-      </label>
+    <div className="main-container">
+      <div className="login-part">
+        <h1 className="login-header">Login</h1>
+        <form className="input-form" onSubmit={handleSubmit}>
+          <label className="user-inputs">
+            <p className="inputs-header">Username:</p>
+            <input
+              className="input"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Enter your username"
+            />
+          </label>
 
-      <br />
+          <br />
 
-      <label className="user-inputs">
-        <p>Password:</p>
-        <input
-          className="input"
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-        />
-        <button type="button" onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? "Hide" : "Show"}
-        </button>
-      </label>
+          <label className="user-inputs">
+            <p>Password:</p>
+            <input
+              className="input"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </label>
 
-      <br />
+          <br />
 
-      <button type="submit">Login</button>
+          <button type="submit">Login</button>
 
-      {submittedName && <p>Welcome, {submittedName} 👋</p>}
-    </form>
+          {submittedName && <p>Welcome, {submittedName} 👋</p>}
+        </form>
+      </div>
+      <img src={logo} alt="Logo" />
+    </div>
   );
 }
