@@ -8,7 +8,7 @@
 .login-part {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
 }
 .main-container {
   display: flex;
@@ -16,10 +16,11 @@
   gap: 50px;
   margin-left: 50px;
 }
-.input {
+
+.custom-input {
   background-color: #c8d9e6;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #2f4156;
   padding: 8px 12px;
   font-size: 14px;
   height: 32px;
@@ -28,14 +29,18 @@
 
 p {
   margin: 0;
+  color: #47636f;
+  font-weight: bold;
 }
 
 .user-inputs {
   display: flex;
   align-items: start;
   flex-direction: column;
+  margin-bottom: 4px;
   gap: 8px;
 }
+
 .inputs-header {
   justify-self: start;
 }
@@ -47,4 +52,30 @@ img {
 
 .login-header {
   margin-top: 0;
+  color: #2f4156;
+}
+
+.login-btn {
+  background-color: #3a4f66;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 12px;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+  background-color: #4e739d;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.2);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
