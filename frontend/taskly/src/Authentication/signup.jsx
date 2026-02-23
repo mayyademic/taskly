@@ -3,30 +3,50 @@ import "./style/login.css";
 import logo from "./assets/logo.tiff";
 import { Link } from "react-router-dom";
 
-export default function LoginAuth() {
+export default function SignUpAuth() {
   return (
     <div className="div-login-main">
-      <LoginInput />
+      <SignUpInput />
     </div>
   );
 }
 
-function LoginInput() {
+function SignUpInput() {
+  const [fistName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [submittedName, setSubmittedName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmittedName(userName);
-    // here is where login logic would go
+    setSubmittedName(fistName);
+    // here is where sign up logic would go
   };
 
   return (
     <div className="main-container">
       <div className="login-part">
-        <h1 className="login-header">Login</h1>
+        <h1 className="login-header">Sign up</h1>
         <form className="input-form" onSubmit={handleSubmit}>
+          <label className="user-inputs">
+            <p className="inputs-header">First Name</p>
+            <input
+              className="custom-input"
+              value={fistName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Enter your username"
+            />
+          </label>
+          <label className="user-inputs">
+            <p className="inputs-header">Last Name</p>
+            <input
+              className="custom-input"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Enter your username"
+            />
+          </label>
           <label className="user-inputs">
             <p className="inputs-header">Username</p>
             <input
@@ -49,12 +69,14 @@ function LoginInput() {
           </label>
 
           <button className="login-btn" type="submit">
-            Login
+            Sign Up
           </button>
 
           {submittedName && <p>Welcome, {submittedName} 👋</p>}
         </form>
-        <Link to="/signup">Create an account</Link>
+        <p className="link">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
       </div>
 
       <img src={logo} alt="Logo" />

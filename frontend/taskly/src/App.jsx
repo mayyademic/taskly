@@ -1,11 +1,18 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginAuth from "./Authentication/login.jsx";
+import SignUpAuth from "./Authentication/signup.jsx";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <LoginAuth />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginAuth />} />
+            <Route path="/signup" element={<SignUpAuth />} />
+          </Routes>
+        </BrowserRouter>
       </header>
     </div>
   );
