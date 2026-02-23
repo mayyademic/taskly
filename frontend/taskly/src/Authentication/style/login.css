@@ -1,17 +1,29 @@
 .div-login-main {
   background-color: #fff;
-  border-radius: 12px;
-
+  border-radius: 16px;
   box-shadow: 4px 8px 24px #848795;
   padding: 16px;
   width: auto;
 }
+.login-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.main-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 50px;
+  margin-left: 50px;
+}
 .input {
   background-color: #c8d9e6;
-  border-radius: 12px;
+  border-radius: 8px;
   border: none;
   padding: 8px 12px;
   font-size: 14px;
+  height: 32px;
+  width: 250px;
 }
 
 p {
@@ -20,6 +32,19 @@ p {
 
 .user-inputs {
   display: flex;
-  align-items: center;
+  align-items: start;
+  flex-direction: column;
   gap: 8px;
+}
+.inputs-header {
+  justify-self: start;
+}
+img {
+  border-radius: 16px;
+  width: 600px;
+  height: auto;
+}
+
+.login-header {
+  margin-top: 0;
 }
