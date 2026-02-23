@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./style/login.css";
 import logo from "./assets/logo.tiff";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUpAuth() {
   return (
@@ -12,7 +12,7 @@ export default function SignUpAuth() {
 }
 
 function SignUpInput() {
-  const navigate = Navigate();
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
