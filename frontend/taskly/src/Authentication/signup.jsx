@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./style/login.css";
 import logo from "./assets/logo.tiff";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function SignUpAuth() {
   return (
@@ -12,16 +12,45 @@ export default function SignUpAuth() {
 }
 
 function SignUpInput() {
+  const navigate = Navigate();
+
   const [fistName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [submittedName, setSubmittedName] = useState("");
 
-  const handleSubmit = (e) => {
+  // Example in SignUpAuth.jsx
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmittedName(fistName);
-    // here is where sign up logic would go
+
+    try {
+      const response = await fetch("http://localhost:8080/taskly/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: userName,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Signup failed");
+
+      const data = await response.json();
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("workspaceId", data.workspaceId);
+
+      setSubmittedName(firstName);
+
+      navigate(`/workspace/${data.workspaceId}`);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to create account. Try again!");
+    }
   };
 
   return (
