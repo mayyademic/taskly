@@ -14,7 +14,7 @@ export default function SignUpAuth() {
 function SignUpInput() {
   const navigate = Navigate();
 
-  const [fistName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +62,7 @@ function SignUpInput() {
             <p className="inputs-header">First Name</p>
             <input
               className="custom-input"
-              value={fistName}
+              value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Enter your username"
             />
