@@ -103,7 +103,7 @@ function SignUpInput() {
 
           {submittedName && <p>Welcome, {submittedName} 👋</p>}
         </form>
-        <p className="link">
+        <p className="link-text">
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
