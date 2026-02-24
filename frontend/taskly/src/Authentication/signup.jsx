@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./style/login.css";
-import logo from "./assets/logo.tiff";
+import logo from "./assets/logo.jpg";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUpAuth() {
