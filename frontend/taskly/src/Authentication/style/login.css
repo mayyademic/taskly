@@ -79,3 +79,8 @@ img {
   transform: translateY(1px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+
+.link-text {
+  color: #2f4156;
+  font: bold;
+}

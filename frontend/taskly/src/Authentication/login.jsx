@@ -77,7 +77,9 @@ function LoginInput() {
 
           {submittedName && <p>Welcome, {submittedName} 👋</p>}
         </form>
-        <Link to="/signup">Create an account</Link>
+        <Link to="/signup">
+          <p className="link-text">Create an account</p>
+        </Link>
       </div>
 
       <img src={logo} alt="Logo" />
