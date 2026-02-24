@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./style/login.css";
-import logo from "./assets/logo.tiff";
+import logo from "./assets/logo.jpg";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginAuth() {
@@ -22,23 +22,26 @@ function LoginInput() {
     e.preventDefault();
 
     try {
+      const params = new URLSearchParams();
+      params.append("username", userName);
+      params.append("password", password);
+
       const response = await fetch("http://localhost:8080/taskly/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: userName, password }),
+        headers: { "Content-Type": "application/x-www-form-urlencoded"},
+        body: params.toString(),
       });
 
       if (!response.ok) throw new Error("Login failed");
 
       const data = await response.json();
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.userId);
-      localStorage.setItem("workspaceId", data.workspaceId);
+//      localStorage.setItem("workspaceId", data.workspaceId);
 
-      setSubmittedName(userName);
+      setSubmittedName(data.firstname);
+      console.log(data);
 
-      navigate(`/workspace/${data.workspaceId}`);
+      // navigate(`/workspace/${data.workspaceId}`);
     } catch (error) {
       console.error(error);
       alert("Invalid username or password");
