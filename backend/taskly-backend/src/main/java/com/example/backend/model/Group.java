@@ -1,21 +1,20 @@
 package com.example.backend.model;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 public class Group {
     private Integer groupId;
     private String groupName;
-    private Integer workspaceId;
-    private Integer taskId;
+    private List<Task> tasks;
 
     public Group() {
     }
 
     private Group(Builder builder) {
-        setGroupId(builder.groupId);
-        setGroupName(builder.groupName);
-        setWorkspaceId(builder.workspaceId);
-        setTaskId(builder.taskId);
+        groupId = builder.groupId;
+        groupName = builder.groupName;
+        tasks = builder.tasks;
     }
 
     public Integer getGroupId() {
@@ -34,20 +33,12 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public Integer getWorkspaceId() {
-        return workspaceId;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setWorkspaceId(Integer workspaceId) {
-        this.workspaceId = workspaceId;
-    }
-
-    public Integer getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override
@@ -55,8 +46,7 @@ public class Group {
         return new StringJoiner(", ", Group.class.getSimpleName() + "[", "]")
                 .add("groupId=" + groupId)
                 .add("groupName='" + groupName + "'")
-                .add("workspaceId=" + workspaceId)
-                .add("taskId=" + taskId)
+                .add("tasks=" + tasks)
                 .toString();
     }
 
@@ -67,8 +57,7 @@ public class Group {
     public static final class Builder {
         private Integer groupId;
         private String groupName;
-        private Integer workspaceId;
-        private Integer taskId;
+        private List<Task> tasks;
 
         public Builder() {
         }
@@ -83,13 +72,8 @@ public class Group {
             return this;
         }
 
-        public Builder withWorkspaceId(Integer val) {
-            workspaceId = val;
-            return this;
-        }
-
-        public Builder withTaskId(Integer val) {
-            taskId = val;
+        public Builder withTasks(List<Task> val) {
+            tasks = val;
             return this;
         }
 

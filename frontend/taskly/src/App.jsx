@@ -12,7 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginAuth />} />
             <Route path="/signup" element={<SignUpAuth />} />
-            <Route path="/workspace" element={<WorkspaceShow />} />
+            <Route path="/workspace/:workspaceID" element={<WorkspaceShow />} />
           </Routes>
         </BrowserRouter>
       </header>

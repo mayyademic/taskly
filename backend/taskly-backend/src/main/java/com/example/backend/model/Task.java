@@ -7,17 +7,15 @@ public class Task {
     private String taskTitle;
     private String taskText;
     private String taskStatus;
-    private Integer groupId;
 
     public Task() {
     }
 
     private Task(Builder builder) {
-        setTaskId(builder.taskId);
-        setTaskTitle(builder.taskTitle);
-        setTaskText(builder.taskText);
-        setTaskStatus(builder.taskStatus);
-        setGroupId(builder.groupId);
+        taskId = builder.taskId;
+        taskTitle = builder.taskTitle;
+        taskText = builder.taskText;
+        taskStatus = builder.taskStatus;
     }
 
     public Integer getTaskId() {
@@ -52,14 +50,6 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
     @Override
     public String toString() {
         return new StringJoiner(", ", Task.class.getSimpleName() + "[", "]")
@@ -67,7 +57,6 @@ public class Task {
                 .add("taskTitle='" + taskTitle + "'")
                 .add("taskText='" + taskText + "'")
                 .add("taskStatus='" + taskStatus + "'")
-                .add("groupId=" + groupId)
                 .toString();
     }
 
@@ -80,7 +69,6 @@ public class Task {
         private String taskTitle;
         private String taskText;
         private String taskStatus;
-        private Integer groupId;
 
         public Builder() {
         }
@@ -102,11 +90,6 @@ public class Task {
 
         public Builder withTaskStatus(String val) {
             taskStatus = val;
-            return this;
-        }
-
-        public Builder withGroupId(Integer val) {
-            groupId = val;
             return this;
         }
 
