@@ -1,9 +1,9 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.User;
-import com.example.backend.model.Workspace;
-import com.example.backend.service.Service;
+import com.example.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.*;
 public class Controller {
 
     @Autowired
-    private Service service;
+    private AuthService authService;
 
     @PostMapping("/login")
     public User login(@RequestParam("username") String username, @RequestParam("password") String password) {
         System.out.println("USERNAME: " + username + " PASSWORD: " + password);
-        return service.login(username, password);
+        return authService.login(username, password);
+    }
+
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User signup(@RequestBody User user) {
+        return authService.signup(user);
     }
 }

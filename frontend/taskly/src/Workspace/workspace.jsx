@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import "./style/style.css";
-import { User, Circle, Clock, CheckCircle2 } from "lucide-react";
+import { Circle, Clock, CheckCircle2 } from "lucide-react";
 
 export default function WorkspaceShow() {
   return (
