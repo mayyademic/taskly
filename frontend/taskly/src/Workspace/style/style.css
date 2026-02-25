@@ -1,0 +1,143 @@
+.workspace-container {
+  margin: 16px;
+  background-color: #ffffff;
+  padding: 20px 40px;
+  font-family: sans-serif;
+  border-radius: 16px;
+}
+
+.workspace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px;
+}
+
+.workspace-title {
+  font-size: xx-large;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-name {
+  text-align: right;
+  font-weight: bold;
+  color: #334155;
+  line-height: 1;
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  background-color: #334155;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.board-layout {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  background-color: #c8d9e6;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 16px;
+}
+
+.column {
+  background-color: #1e293b;
+  width: 320px;
+  min-height: 480px;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.column-header {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.column-header h2 {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: larger;
+  color: #47636f;
+  font-weight: 900;
+}
+
+.empty-area {
+  flex: 1;
+  border: 2px dashed rgba(255, 255, 255, 0.729);
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e7f2fa;
+  font-style: italic;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.task-card {
+  background-color: #e7e1dd;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.task-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.icon-todo {
+  color: #94a3b8;
+}
+.icon-progress {
+  color: #fb923c;
+}
+.icon-done {
+  color: #22c55e;
+}
