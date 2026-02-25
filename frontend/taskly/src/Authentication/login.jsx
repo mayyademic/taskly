@@ -28,7 +28,7 @@ function LoginInput() {
 
       const response = await fetch("http://localhost:8080/taskly/login", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded"},
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: params.toString(),
       });
 
@@ -36,12 +36,12 @@ function LoginInput() {
 
       const data = await response.json();
 
-//      localStorage.setItem("workspaceId", data.workspaceId);
+      localStorage.setItem("workspaceId", data.workspaceId);
 
       setSubmittedName(data.firstname);
       console.log(data);
 
-      // navigate(`/workspace/${data.workspaceId}`);
+      navigate(`/workspace/${data.workspaceId}`);
     } catch (error) {
       console.error(error);
       alert("Invalid username or password");
