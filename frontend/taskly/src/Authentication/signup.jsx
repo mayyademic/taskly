@@ -20,7 +20,6 @@ function SignUpInput() {
   const [password, setPassword] = useState("");
   const [submittedName, setSubmittedName] = useState("");
 
-  // Example in SignUpAuth.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
 
