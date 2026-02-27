@@ -5,6 +5,7 @@ import java.util.StringJoiner;
 
 public class Group {
     private Integer groupId;
+    private Integer workspaceId;
     private String groupName;
     private List<Task> tasks;
 
@@ -13,6 +14,7 @@ public class Group {
 
     private Group(Builder builder) {
         groupId = builder.groupId;
+        workspaceId = builder.workspaceId;
         groupName = builder.groupName;
         tasks = builder.tasks;
     }
@@ -26,6 +28,14 @@ public class Group {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public Integer getWorkspaceId() {
+        return workspaceId;
+    }
+
+    public void setWorkspaceId(Integer workspaceId) {
+        this.workspaceId = workspaceId;
     }
 
     public String getGroupName() {
@@ -48,6 +58,7 @@ public class Group {
     public String toString() {
         return new StringJoiner(", ", Group.class.getSimpleName() + "[", "]")
                 .add("groupId=" + groupId)
+                .add("workspaceId=" + workspaceId)
                 .add("groupName='" + groupName + "'")
                 .add("tasks=" + tasks)
                 .toString();
@@ -59,6 +70,7 @@ public class Group {
 
     public static final class Builder {
         private Integer groupId;
+        private Integer workspaceId;
         private String groupName;
         private List<Task> tasks;
 
@@ -67,6 +79,11 @@ public class Group {
 
         public Builder withGroupId(Integer val) {
             groupId = val;
+            return this;
+        }
+
+        public Builder withWorkspaceId(Integer val) {
+            workspaceId = val;
             return this;
         }
 

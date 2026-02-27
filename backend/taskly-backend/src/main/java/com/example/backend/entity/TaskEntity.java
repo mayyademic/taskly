@@ -14,9 +14,8 @@ public class TaskEntity {
     private String taskText;
     private String taskStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private GroupEntity group;
+    @Column(name = "group_id")
+    private Integer groupId;
 
     public TaskEntity() {
     }
@@ -26,7 +25,7 @@ public class TaskEntity {
         setTaskTitle(builder.taskTitle);
         setTaskText(builder.taskText);
         setTaskStatus(builder.taskStatus);
-        setGroup(builder.group);
+        setGroupId(builder.groupId);
     }
 
     public Integer getId() {
@@ -61,12 +60,12 @@ public class TaskEntity {
         this.taskStatus = taskStatus;
     }
 
-    public GroupEntity getGroup() {
-        return group;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(GroupEntity group) {
-        this.group = group;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public static Builder build() {
@@ -78,7 +77,7 @@ public class TaskEntity {
         private String taskTitle;
         private String taskText;
         private String taskStatus;
-        private GroupEntity group;
+        private Integer groupId;
 
         public Builder() {
         }
@@ -103,8 +102,8 @@ public class TaskEntity {
             return this;
         }
 
-        public Builder withGroup(GroupEntity val) {
-            group = val;
+        public Builder withGroupId(Integer val) {
+            groupId = val;
             return this;
         }
 

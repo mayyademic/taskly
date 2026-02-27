@@ -1,5 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.entity.GroupEntity;
+import com.example.backend.entity.TaskEntity;
+import com.example.backend.model.Group;
+import com.example.backend.model.Task;
 import com.example.backend.model.User;
 import com.example.backend.model.Workspace;
 import com.example.backend.service.AuthService;
@@ -33,5 +37,20 @@ public class Controller {
     @GetMapping("/getWorkspceById/{id}")
     public Workspace getWorkspaceById(@PathVariable Integer id) {
         return workspaceService.getWorkspaceById(id);
+    }
+
+    @PostMapping("/createGroup")
+    public GroupEntity createGroup(@RequestBody Group group) {
+        return workspaceService.createGroup(group);
+    }
+
+    @PostMapping("/creatTask")
+    public TaskEntity createTask(@RequestBody Task task) {
+        return workspaceService.createAndUpdateTask(task);
+    }
+
+    @PostMapping("/updateTask")
+    public TaskEntity updateStatus(@RequestBody Task task) {
+        return workspaceService.createAndUpdateTask(task);
     }
 }

@@ -17,7 +17,8 @@ public class WorkspaceEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "workspace_id", referencedColumnName = "id")
     private Set<GroupEntity> groups = new HashSet<>();
 
     @PrePersist
