@@ -18,6 +18,9 @@ public class Task {
         taskStatus = builder.taskStatus;
     }
 
+    public Task(Integer id, String taskTitle, String taskText, String taskStatus) {
+    }
+
     public Integer getTaskId() {
         return taskId;
     }

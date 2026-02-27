@@ -3,6 +3,8 @@ package com.example.backend.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "workspaces")
@@ -14,6 +16,9 @@ public class WorkspaceEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
+    private Set<GroupEntity> groups = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
@@ -28,6 +33,7 @@ public class WorkspaceEntity {
     private WorkspaceEntity(Builder builder) {
         setId(builder.id);
         setCreatedAt(builder.createdAt);
+        setGroups(builder.groups);
     }
 
     public Integer getId() {
@@ -46,13 +52,23 @@ public class WorkspaceEntity {
         this.createdAt = createdAt;
     }
 
+    public Set<GroupEntity> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<GroupEntity> groups) {
+        this.groups = groups;
+    }
+
     public static Builder build() {
         return new Builder();
     }
 
+
     public static final class Builder {
         private Integer id;
         private LocalDateTime createdAt;
+        private Set<GroupEntity> groups;
 
         public Builder() {
         }
@@ -64,6 +80,11 @@ public class WorkspaceEntity {
 
         public Builder withCreatedAt(LocalDateTime val) {
             createdAt = val;
+            return this;
+        }
+
+        public Builder withGroups(Set<GroupEntity> val) {
+            groups = val;
             return this;
         }
 
