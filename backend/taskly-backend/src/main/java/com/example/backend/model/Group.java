@@ -17,6 +17,9 @@ public class Group {
         tasks = builder.tasks;
     }
 
+    public Group(Integer id, String groupName, List<Task> list) {
+    }
+
     public Integer getGroupId() {
         return groupId;
     }

@@ -124,12 +124,23 @@ export default function WorkspaceShow() {
         const workspaceId = localStorage.getItem("workspaceId");
 
         const response = await fetch(
-          `http://localhost:8080/taskly/tasks?workspaceId=${workspaceId}`
+            `http://localhost:8080/taskly/getWorkspceById/${Number(workspaceId)}`
         );
         if (!response.ok) throw new Error("Fehler beim Laden");
 
-        const data = await response.json();
-        setTasks(data); // Die vom Backend erhaltenen Tasks setzen
+        const data = await response.json()
+        console.log(data);
+
+        const allTasks = data.groups.flatMap((group) =>
+            group.tasks.map((task) => ({
+              ...task,
+              groupId: group.id,
+              category: group.name,
+            }))
+        );
+
+        setTasks(allTasks);
+
       } catch (error) {
         console.error("Fetch Error:", error);
       } finally {
