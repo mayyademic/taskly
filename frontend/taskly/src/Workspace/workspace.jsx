@@ -14,6 +14,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Circle, Clock, CheckCircle2 } from "lucide-react";
 import "./style/style.css";
+import { useGlobalContext } from "../context/ContextFile";
 
 const COLUMNS = [
   {
@@ -104,6 +105,8 @@ function Column({ column, tasks }) {
 }
 
 export default function WorkspaceShow() {
+  const { firstName, lastName } = useGlobalContext();
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTask, setActiveTask] = useState(null);
@@ -191,10 +194,10 @@ export default function WorkspaceShow() {
         <h1 className="workspace-title">To do List</h1>
         <div className="user-profile">
           <div className="user-name">
-            <p>Bob</p>
-            <p>Braun</p>
+            <p>{firstName}</p>
+            <p>{lastName}</p>
           </div>
-          <div className="user-avatar">B</div>
+          <div className="user-avatar">{firstName ? firstName[0] : "U"}</div>
         </div>
       </header>
 

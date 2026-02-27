@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./style/login.css";
 import logo from "./assets/logo.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context/ContextFile";
 
 export default function LoginAuth() {
   return (
@@ -14,9 +15,10 @@ export default function LoginAuth() {
 function LoginInput() {
   const navigate = useNavigate();
 
+  const { setFirstName, setLastName } = useGlobalContext();
+
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [submittedName, setSubmittedName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,11 +37,16 @@ function LoginInput() {
       if (!response.ok) throw new Error("Login failed");
 
       const data = await response.json();
+      console.log("Daten vom Server:", data);
 
-      localStorage.setItem("workspaceId", data.workspaceId);
+      const safeFirst = data.firstname;
+      const safeLast = data.lastname;
 
-      setSubmittedName(data.firstname);
-      console.log(data);
+      localStorage.setItem("firstname", safeFirst);
+      localStorage.setItem("lastname", safeLast);
+
+      setFirstName(safeFirst);
+      setLastName(safeLast);
 
       navigate(`/workspace/${data.workspaceId}`);
     } catch (error) {
@@ -77,8 +84,6 @@ function LoginInput() {
           <button className="login-btn" type="submit">
             Login
           </button>
-
-          {submittedName && <p>Welcome, {submittedName} 👋</p>}
         </form>
         <Link to="/signup">
           <p className="link-text">Create an account</p>
