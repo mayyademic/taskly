@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useSortable } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   closestCorners,
@@ -9,6 +9,7 @@ import {
 import {
   SortableContext,
   verticalListSortingStrategy,
+  useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Circle, Clock, CheckCircle2 } from "lucide-react";
