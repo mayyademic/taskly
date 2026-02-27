@@ -14,11 +14,11 @@ public class GroupEntity {
 
     private String groupName;
 
-    @ManyToOne
-    @JoinColumn(name = "workspace_id")
-    private WorkspaceEntity workspace;
+    @Column(name = "workspace_id")
+    private Integer workspaceId;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
     private List<TaskEntity> tasks;
 
     public GroupEntity() {
@@ -27,7 +27,7 @@ public class GroupEntity {
     private GroupEntity(Builder builder) {
         setId(builder.id);
         setGroupName(builder.groupName);
-        setWorkspace(builder.workspace);
+        setWorkspaceId(builder.workspaceId);
         setTasks(builder.tasks);
     }
 
@@ -39,12 +39,12 @@ public class GroupEntity {
         this.tasks = tasks;
     }
 
-    public WorkspaceEntity getWorkspace() {
-        return workspace;
+    public Integer getWorkspaceId() {
+        return workspaceId;
     }
 
-    public void setWorkspace(WorkspaceEntity workspace) {
-        this.workspace = workspace;
+    public void setWorkspaceId(Integer workspaceId) {
+        this.workspaceId = workspaceId;
     }
 
     public String getGroupName() {
@@ -70,7 +70,7 @@ public class GroupEntity {
     public static final class Builder {
         private Integer id;
         private String groupName;
-        private WorkspaceEntity workspace;
+        private Integer workspaceId;
         private List<TaskEntity> tasks;
 
         public Builder() {
@@ -86,8 +86,8 @@ public class GroupEntity {
             return this;
         }
 
-        public Builder withWorkspace(WorkspaceEntity val) {
-            workspace = val;
+        public Builder withWorkspaceId(Integer val) {
+            workspaceId = val;
             return this;
         }
 
