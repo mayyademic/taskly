@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./style/login.css";
 import logo from "./assets/logo.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context/ContextFile";
 
 export default function SignUpAuth() {
   return (
@@ -14,11 +15,16 @@ export default function SignUpAuth() {
 function SignUpInput() {
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [submittedName, setSubmittedName] = useState("");
+  const {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    userName,
+    setUserName,
+    password,
+    setPassword,
+  } = useGlobalContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +37,7 @@ function SignUpInput() {
           username: userName,
           password: password,
           firstname: firstName,
-          lastname: lastName
+          lastname: lastName,
         }),
       });
 
@@ -39,11 +45,18 @@ function SignUpInput() {
 
       const data = await response.json();
 
-      localStorage.setItem("token", data.token);
+      console.log("Server Antwort:", data);
+
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("workspaceId", data.workspaceId);
 
-      setSubmittedName(firstName);
+      const finalFirst = data.firstName || data.firstname || firstName;
+
+      console.log("Speichere Vorname:", finalFirst);
+      localStorage.setItem("firstName", finalFirst);
+
+      setFirstName(finalFirst);
+      setLastName(data.lastName);
 
       navigate(`/workspace/${data.workspaceId}`);
     } catch (error) {
@@ -99,8 +112,6 @@ function SignUpInput() {
           <button className="login-btn" type="submit">
             Sign Up
           </button>
-
-          {submittedName && <p>Welcome, {submittedName} 👋</p>}
         </form>
         <p className="link-text">
           Already have an account? <Link to="/">Login</Link>
