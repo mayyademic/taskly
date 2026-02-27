@@ -16,12 +16,12 @@ import "./style/style.css";
 
 const COLUMNS = [
   {
-    id: "todo",
+    id: "toDo",
     title: "To do",
     statusIcon: <Circle className="icon-todo" size={20} />,
   },
   {
-    id: "in-progress",
+    id: "inProgress",
     title: "In Progress",
     statusIcon: <Clock className="icon-progress" size={20} />,
   },
@@ -79,7 +79,6 @@ function Column({ column, tasks }) {
         <h2>{column.title}</h2>
       </div>
 
-      {/* SortableContext ist nötig, damit die Tasks beim Klick nicht verschwinden */}
       <SortableContext
         items={tasks.map((t) => t.id)}
         strategy={verticalListSortingStrategy}
@@ -103,9 +102,8 @@ function Column({ column, tasks }) {
   );
 }
 
-// --- 3. Hauptkomponente ---
 export default function WorkspaceShow() {
-  const [tasks, setTasks] = useState([]); // Startet leer
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTask, setActiveTask] = useState(null);
 
@@ -116,31 +114,32 @@ export default function WorkspaceShow() {
       },
     })
   );
-  // 1. Daten vom Backend laden
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        // Wir holen die workspaceId aus dem LocalStorage (vom Login-Prozess)
         const workspaceId = localStorage.getItem("workspaceId");
 
         const response = await fetch(
-            `http://localhost:8080/taskly/getWorkspceById/${Number(workspaceId)}`
+          `http://localhost:8080/taskly/getWorkspceById/${Number(workspaceId)}`
         );
         if (!response.ok) throw new Error("Fehler beim Laden");
 
-        const data = await response.json()
+        const data = await response.json();
         console.log(data);
 
         const allTasks = data.groups.flatMap((group) =>
-            group.tasks.map((task) => ({
-              ...task,
-              groupId: group.id,
-              category: group.name,
-            }))
+          group.tasks.map((task) => ({
+            id: task.taskId,
+            text: task.taskTitle,
+            description: task.taskText,
+            status: task.taskStatus,
+            category: group.groupName,
+            groupId: group.groupId,
+          }))
         );
 
         setTasks(allTasks);
-
       } catch (error) {
         console.error("Fetch Error:", error);
       } finally {
@@ -170,9 +169,6 @@ export default function WorkspaceShow() {
 
     const taskId = active.id;
     const overId = over.id;
-
-    // Bestimme den neuen Status basierend darauf, ob auf eine Spalte
-    // oder eine andere Karte gedroppt wurde
     let newStatus = overId;
     const overTask = tasks.find((t) => t.id === overId);
     if (overTask) newStatus = overTask.status;
