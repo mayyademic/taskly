@@ -1,5 +1,7 @@
 package com.example.backend.service;
 
+import com.example.backend.entity.GroupEntity;
+import com.example.backend.entity.TaskEntity;
 import com.example.backend.entity.WorkspaceEntity;
 import com.example.backend.model.Group;
 import com.example.backend.model.Task;
@@ -31,6 +33,29 @@ public class WorkspaceService {
                 .orElseThrow();
 
         return mapToModel(workspace);
+    }
+
+
+    public GroupEntity createGroup(Group group) {
+        GroupEntity groupEntity = GroupEntity.build()
+                .withId(group.getGroupId())
+                .withGroupName(group.getGroupName())
+                .withWorkspaceId(group.getWorkspaceId())
+                .build();
+
+        return groupRepository.save(groupEntity);
+    }
+
+    public TaskEntity createAndUpdateTask(Task task) {
+        TaskEntity taskEntity = TaskEntity.build()
+                .withId(task.getTaskId())
+                .withTaskTitle(task.getTaskTitle())
+                .withTaskText(task.getTaskText())
+                .withTaskStatus(task.getTaskStatus())
+                .withGroupId(task.getGroupId())
+                .build();
+
+        return taskRepository.save(taskEntity);
     }
 
     private Workspace mapToModel(WorkspaceEntity workspace) {

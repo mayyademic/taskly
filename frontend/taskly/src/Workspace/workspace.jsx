@@ -153,8 +153,8 @@ export default function WorkspaceShow() {
 
   async function updateTaskStatus(taskId, newStatus) {
     try {
-      await fetch(`http://localhost:8080/taskly/tasks/update-status`, {
-        method: "PUT",
+      await fetch(`http://localhost:8080/taskly/updateStatus`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ taskId, status: newStatus }),
       });
