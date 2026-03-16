@@ -1,30 +1,25 @@
-import { useState } from "react";
-import "./style/login.css";
-import logo from "./assets/logo.jpg";
+import { useState } from "react"; // Added useState
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/ContextFile";
+import FormInput from "./FormInput";
+import logo from "./assets/logo.jpg";
+import "./style/login.css";
 
 export default function SignUpAuth() {
-  return (
-    <div className="div-login-main">
-      <SignUpInput />
-    </div>
-  );
-}
-
-function SignUpInput() {
   const navigate = useNavigate();
+  const { updateUserInfo } = useGlobalContext();
 
-  const {
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    userName,
-    setUserName,
-    password,
-    setPassword,
-  } = useGlobalContext();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,10 +29,10 @@ function SignUpInput() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username: userName,
-          password: password,
-          firstname: firstName,
-          lastname: lastName,
+          username: formData.username,
+          password: formData.password,
+          firstname: formData.firstName,
+          lastname: formData.lastName,
         }),
       });
 
@@ -45,18 +40,16 @@ function SignUpInput() {
 
       const data = await response.json();
 
-      console.log("Server Antwort:", data);
-
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("workspaceId", data.workspaceId);
+      localStorage.setItem("firstname", data.firstname || formData.firstName);
+      localStorage.setItem("lastname", data.lastname || formData.lastName);
 
-      const finalFirst = data.firstName || data.firstname || firstName;
-
-      console.log("Speichere Vorname:", finalFirst);
-      localStorage.setItem("firstName", finalFirst);
-
-      setFirstName(finalFirst);
-      setLastName(data.lastName);
+      updateUserInfo({
+        firstName: data.firstname || formData.firstName,
+        lastName: data.lastname || formData.lastName,
+        workspaceId: data.workspaceId,
+      });
 
       navigate(`/workspace/${data.workspaceId}`);
     } catch (error) {
@@ -66,59 +59,57 @@ function SignUpInput() {
   };
 
   return (
-    <div className="main-container">
-      <div className="login-part">
-        <h1 className="login-header">Sign up</h1>
-        <form className="input-form" onSubmit={handleSubmit}>
-          <label className="user-inputs">
-            <p className="inputs-header">First Name</p>
-            <input
-              className="custom-input"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Enter your username"
-            />
-          </label>
-          <label className="user-inputs">
-            <p className="inputs-header">Last Name</p>
-            <input
-              className="custom-input"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Enter your username"
-            />
-          </label>
-          <label className="user-inputs">
-            <p className="inputs-header">Username</p>
-            <input
-              className="custom-input"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              placeholder="Enter your username"
-            />
-          </label>
+    <div className="div-login-main">
+      <div className="main-container">
+        <div className="login-part">
+          <h1 className="login-header">Sign up</h1>
 
-          <label className="user-inputs">
-            <p className="inputs-header">Password</p>
-            <input
-              className="custom-input"
+          <form className="input-form" onSubmit={handleSubmit}>
+            <FormInput
+              label="First Name"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="Enter your first name"
+            />
+
+            <FormInput
+              label="Last Name"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Enter your last name"
+            />
+
+            <FormInput
+              label="Username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Choose a username"
+            />
+
+            <FormInput
+              label="Password"
+              name="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Create a password"
             />
-          </label>
 
-          <button className="login-btn" type="submit">
-            Sign Up
-          </button>
-        </form>
-        <p className="link-text">
-          Already have an account? <Link to="/">Login</Link>
-        </p>
+            <button className="login-btn" type="submit">
+              Sign Up
+            </button>
+          </form>
+
+          <p className="link-text">
+            Already have an account? <Link to="/">Login</Link>
+          </p>
+        </div>
+
+        <img src={logo} alt="Logo" className="auth-logo" />
       </div>
-
-      <img src={logo} alt="Logo" />
     </div>
   );
 }

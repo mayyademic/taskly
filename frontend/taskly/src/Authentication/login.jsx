@@ -1,32 +1,28 @@
 import { useState } from "react";
-import "./style/login.css";
-import logo from "./assets/logo.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/ContextFile";
+import FormInput from "./FormInput";
+import logo from "./assets/logo.jpg";
+import "./style/login.css";
 
 export default function LoginAuth() {
-  return (
-    <div className="div-login-main">
-      <LoginInput />
-    </div>
-  );
-}
-
-function LoginInput() {
   const navigate = useNavigate();
+  const { updateUserInfo } = useGlobalContext();
 
-  const { setFirstName, setLastName } = useGlobalContext();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const params = new URLSearchParams();
-      params.append("username", userName);
-      params.append("password", password);
+      const params = new URLSearchParams(formData);
 
       const response = await fetch("http://localhost:8080/taskly/login", {
         method: "POST",
@@ -37,16 +33,16 @@ function LoginInput() {
       if (!response.ok) throw new Error("Login failed");
 
       const data = await response.json();
-      console.log("Daten vom Server:", data);
 
-      const safeFirst = data.firstname;
-      const safeLast = data.lastname;
+      localStorage.setItem("firstname", data.firstname);
+      localStorage.setItem("lastname", data.lastname);
+      localStorage.setItem("workspaceId", data.workspaceId);
 
-      localStorage.setItem("firstname", safeFirst);
-      localStorage.setItem("lastname", safeLast);
-
-      setFirstName(safeFirst);
-      setLastName(safeLast);
+      updateUserInfo({
+        firstName: data.firstname,
+        lastName: data.lastname,
+        workspaceId: data.workspaceId,
+      });
 
       navigate(`/workspace/${data.workspaceId}`);
     } catch (error) {
@@ -56,41 +52,41 @@ function LoginInput() {
   };
 
   return (
-    <div className="main-container">
-      <div className="login-part">
-        <h1 className="login-header">Login</h1>
-        <form className="input-form" onSubmit={handleSubmit}>
-          <label className="user-inputs">
-            <p className="inputs-header">Username</p>
-            <input
-              className="custom-input"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+    <div className="div-login-main">
+      <div className="main-container">
+        <div className="login-part">
+          <h1 className="login-header">Login</h1>
+
+          <form className="input-form" onSubmit={handleSubmit}>
+            <FormInput
+              label="Username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
               placeholder="Enter your username"
             />
-          </label>
 
-          <label className="user-inputs">
-            <p className="inputs-header">Password</p>
-            <input
-              className="custom-input"
+            <FormInput
+              label="Password"
+              name="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Enter your password"
             />
-          </label>
 
-          <button className="login-btn" type="submit">
-            Login
-          </button>
-        </form>
-        <Link to="/signup">
-          <p className="link-text">Create an account</p>
-        </Link>
+            <button className="login-btn" type="submit">
+              Login
+            </button>
+          </form>
+
+          <Link to="/signup">
+            <p className="link-text">Create an account</p>
+          </Link>
+        </div>
+
+        <img src={logo} alt="Logo" className="auth-logo" />
       </div>
-
-      <img src={logo} alt="Logo" />
     </div>
   );
 }

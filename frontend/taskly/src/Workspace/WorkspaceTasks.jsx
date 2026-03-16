@@ -1,0 +1,61 @@
+import { useState, useEffect, useMemo } from "react";
+
+export function useWorkspaceTasks() {
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchTasks = async () => {
+    try {
+      const workspaceId = localStorage.getItem("workspaceId");
+      const response = await fetch(
+        `http://localhost:8080/taskly/getWorkspceById/${Number(workspaceId)}`
+      );
+      if (!response.ok) throw new Error("Fehler beim Laden");
+
+      const data = await response.json();
+      const allTasks = data.groups.flatMap((group) =>
+        group.tasks.map((task) => ({
+          id: task.taskId,
+          text: task.taskTitle,
+          status: task.taskStatus,
+          category: group.groupName,
+        }))
+      );
+      setTasks(allTasks);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const updateTaskStatus = async (taskId, newStatus) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
+    );
+
+    try {
+      await fetch(`http://localhost:8080/taskly/updateStatus`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ taskId, status: newStatus }),
+      });
+    } catch (error) {
+      console.error("Update failed:", error);
+      fetchTasks();
+    }
+  };
+
+  const tasksByStatus = useMemo(() => {
+    return tasks.reduce((acc, task) => {
+      acc[task.status] = [...(acc[task.status] || []), task];
+      return acc;
+    }, {});
+  }, [tasks]);
+
+  return { tasksByStatus, loading, updateTaskStatus };
+}
