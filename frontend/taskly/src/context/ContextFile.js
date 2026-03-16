@@ -3,24 +3,26 @@ import React, { createContext, useState, useContext } from "react";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const [firstName, setFirstName] = useState(localStorage.getItem("firstname"));
-  const [lastName, setLastName] = useState(
-    localStorage.getItem("lastname") || ""
-  );
-  const [userName, setUserName] = useState(
-    localStorage.getItem("username") || ""
-  );
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    firstName: localStorage.getItem("firstname") || "",
+    lastName: localStorage.getItem("lastname") || "",
+    workspaceId: localStorage.getItem("workspaceId") || "",
+  });
+
+  const logout = () => {
+    localStorage.clear();
+    setUser({ firstName: "", lastName: "", workspaceId: "" });
+    window.location.href = "/";
+  };
+
+  const updateUserInfo = (newData) => {
+    setUser((prev) => ({ ...prev, ...newData }));
+  };
 
   const value = {
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    userName,
-    setUserName,
-    password,
-    setPassword,
+    ...user,
+    updateUserInfo,
+    logout,
   };
 
   return (
