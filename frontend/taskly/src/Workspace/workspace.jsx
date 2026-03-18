@@ -155,7 +155,7 @@ export default function WorkspaceShow() {
               key={col.id}
               column={col}
               tasks={tasksByStatus[col.id]}
-              onAddTask={addTask} // <-- Pass the function here
+              onAddTask={addTask}
             />
           ))}
         </DndContext>
