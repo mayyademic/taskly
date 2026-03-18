@@ -16,6 +16,7 @@ import { Circle, Clock, CheckCircle2 } from "lucide-react";
 import { useGlobalContext } from "../context/ContextFile";
 import { useWorkspaceTasks } from "./WorkspaceTasks";
 import "./style/style.css";
+import AddTask from "./AddTask";
 
 const COLUMNS = [
   {
@@ -69,12 +70,13 @@ function TaskCard({ task, icon }) {
   );
 }
 
-function Column({ column, tasks = [] }) {
+function Column({ column, tasks = [], onAddTask }) {
   return (
     <div className="column">
       <div className="column-header">
         <h2>{column.title}</h2>
       </div>
+
       <SortableContext
         items={tasks.map((t) => t.id)}
         strategy={verticalListSortingStrategy}
@@ -97,7 +99,10 @@ function Column({ column, tasks = [] }) {
 
 export default function WorkspaceShow() {
   const { firstName, lastName, logout } = useGlobalContext();
-  const { tasksByStatus, loading, updateTaskStatus } = useWorkspaceTasks();
+  const { tasksByStatus, loading, updateTaskStatus, addTask } =
+    useWorkspaceTasks();
+
+  const currentGroupId = Object.values(tasksByStatus).flat()[0]?.groupId || 1;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -126,6 +131,7 @@ export default function WorkspaceShow() {
       <header className="workspace-header">
         <h1 className="workspace-title">Taskly Board</h1>
         <div className="user-profile">
+          <AddTask onAdd={addTask} groupId={currentGroupId} />
           <div className="user-name">
             <p>
               {firstName} {lastName}
@@ -145,7 +151,12 @@ export default function WorkspaceShow() {
           onDragEnd={handleDragEnd}
         >
           {COLUMNS.map((col) => (
-            <Column key={col.id} column={col} tasks={tasksByStatus[col.id]} />
+            <Column
+              key={col.id}
+              column={col}
+              tasks={tasksByStatus[col.id]}
+              onAddTask={addTask} // <-- Pass the function here
+            />
           ))}
         </DndContext>
       </main>
