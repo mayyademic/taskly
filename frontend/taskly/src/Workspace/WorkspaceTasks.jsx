@@ -35,15 +35,24 @@ export function useWorkspaceTasks() {
   }, []);
 
   const updateTaskStatus = async (taskId, newStatus) => {
+    const taskToUpdate = tasks.find((t) => t.id === taskId);
+    if (!taskToUpdate) return;
+
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
     );
 
     try {
-      await fetch(`http://localhost:8080/taskly/updateStatus`, {
+      await fetch(`http://localhost:8080/taskly/updateTask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskId, status: newStatus }),
+        body: JSON.stringify({
+          taskId: taskToUpdate.id,
+          taskStatus: newStatus,
+          taskTitle: taskToUpdate.text,
+          taskText: taskToUpdate.description || "",
+          groupId: taskToUpdate.groupId,
+        }),
       });
     } catch (error) {
       console.error("Update failed:", error);
@@ -52,7 +61,6 @@ export function useWorkspaceTasks() {
   };
 
   const addTask = async (taskData) => {
-    // taskData enthält title, description, status, groupId
     try {
       const response = await fetch(`http://localhost:8080/taskly/creatTask`, {
         method: "POST",
