@@ -99,10 +99,8 @@ function Column({ column, tasks = [], onAddTask }) {
 
 export default function WorkspaceShow() {
   const { firstName, lastName, logout } = useGlobalContext();
-  const { tasksByStatus, loading, updateTaskStatus, addTask } =
+  const { tasksByStatus, loading, updateTaskStatus, addTask, defaultGroupId } =
     useWorkspaceTasks();
-
-  const currentGroupId = Object.values(tasksByStatus).flat()[0]?.groupId || 1;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -131,7 +129,7 @@ export default function WorkspaceShow() {
       <header className="workspace-header">
         <h1 className="workspace-title">Taskly Board</h1>
         <div className="user-profile">
-          <AddTask onAdd={addTask} groupId={currentGroupId} />
+          <AddTask onAdd={addTask} groupId={defaultGroupId} />
           <div className="user-name">
             <p>
               {firstName} {lastName}

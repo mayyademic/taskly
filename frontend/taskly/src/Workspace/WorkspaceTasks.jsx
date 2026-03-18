@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 export function useWorkspaceTasks() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [defaultGroupId, setDefaultGroupId] = useState(null);
 
   const fetchTasks = async () => {
     try {
@@ -13,6 +14,10 @@ export function useWorkspaceTasks() {
       if (!response.ok) throw new Error("Fehler beim Laden");
 
       const data = await response.json();
+      if (data.groups && data.groups.length > 0) {
+        setDefaultGroupId(data.groups[0].groupId);
+      }
+
       const allTasks = data.groups.flatMap((group) =>
         group.tasks.map((task) => ({
           id: task.taskId,
@@ -99,5 +104,5 @@ export function useWorkspaceTasks() {
     }, {});
   }, [tasks]);
 
-  return { tasksByStatus, loading, updateTaskStatus, addTask };
+  return { tasksByStatus, loading, updateTaskStatus, addTask, defaultGroupId };
 }
