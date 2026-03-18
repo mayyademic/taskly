@@ -23,6 +23,7 @@ export function useWorkspaceTasks() {
           id: task.taskId,
           text: task.taskTitle,
           status: task.taskStatus,
+          description: task.taskText,
           category: group.groupName,
           groupId: group.groupId,
         }))

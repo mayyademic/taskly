@@ -17,7 +17,11 @@ export default function AddTask({ onAdd, groupId }) {
 
     onAdd({ ...formData, groupId });
 
-    setFormData({ title: "", description: "", status: "toDo" });
+    setFormData({
+      title: "",
+      description: "",
+      status: "toDo",
+    });
     setIsEditing(false);
   };
 
