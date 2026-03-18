@@ -6,15 +6,16 @@ import "./style/style.css";
 export default function EditTask({ task, onUpdate, closeModal }) {
   const [formData, setFormData] = useState({
     title: task.text || "",
-    description: task.description || "",
+    description: task.description || task.taskText || "",
     status: task.status || "toDo",
   });
 
   useEffect(() => {
     setFormData({
-      title: task.text || "",
-      description: task.description || "",
-      status: task.status || "toDo",
+      title: task.text || task.taskTitle || "",
+      description:
+        task.description || task.taskDescription || task.taskText || "",
+      status: task.status || task.taskStatus || "toDo",
     });
   }, [task]);
 
