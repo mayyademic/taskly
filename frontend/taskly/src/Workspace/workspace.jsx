@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DndContext,
   closestCorners,
@@ -17,6 +17,7 @@ import { useGlobalContext } from "../context/ContextFile";
 import { useWorkspaceTasks } from "./WorkspaceTasks";
 import "./style/style.css";
 import AddTask from "./AddTask";
+import EditTask from "./EditTask";
 
 const COLUMNS = [
   {
@@ -36,7 +37,9 @@ const COLUMNS = [
   },
 ];
 
-function TaskCard({ task, icon }) {
+function TaskCard({ task, icon, onUpdate }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     attributes,
     listeners,
@@ -44,33 +47,55 @@ function TaskCard({ task, icon }) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: task.id });
+  } = useSortable({ id: task.id, disabled: isModalOpen });
 
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    zIndex: isDragging ? 100 : 1,
+    zIndex: isModalOpen ? 1000 : isDragging ? 100 : 1,
+    position: isModalOpen ? "fixed" : "relative",
+  };
+
+  const handleCardClick = (e) => {
+    if (isDragging) return;
+    setIsModalOpen(true);
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="task-card"
-    >
-      <div className="task-left">
-        {icon}
-        <span className="task-text">{task.text}</span>
+    <>
+      <div
+        ref={setNodeRef}
+        style={style}
+        onClick={handleCardClick}
+        className="task-card"
+        {...attributes}
+      >
+        <div className="task-left" {...listeners}>
+          {icon}
+          <span className="task-text">{task.text}</span>
+        </div>
+
+        <div className="task-actions">
+          <span className="task-category">{task.category}</span>
+        </div>
       </div>
-      <span className="task-category">{task.category}</span>
-    </div>
+
+      {isModalOpen && (
+        <EditTask
+          task={task}
+          onUpdate={onUpdate}
+          closeModal={(e) => {
+            if (e) e.stopPropagation();
+            setIsModalOpen(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 
-function Column({ column, tasks = [], onAddTask }) {
+function Column({ column, tasks = [], onAddTask, onUpdate }) {
   return (
     <div className="column">
       <div className="column-header">
@@ -84,7 +109,12 @@ function Column({ column, tasks = [], onAddTask }) {
       >
         <div className="task-list">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} icon={column.icon} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              icon={column.icon}
+              onUpdate={onUpdate}
+            />
           ))}
           {tasks.length === 0 && (
             <div className="empty-area">
@@ -99,7 +129,7 @@ function Column({ column, tasks = [], onAddTask }) {
 
 export default function WorkspaceShow() {
   const { firstName, lastName, logout } = useGlobalContext();
-  const { tasksByStatus, loading, updateTaskStatus, addTask, defaultGroupId } =
+  const { tasksByStatus, loading, updateTask, addTask, defaultGroupId } =
     useWorkspaceTasks();
 
   const sensors = useSensors(
@@ -118,7 +148,7 @@ export default function WorkspaceShow() {
       .flat()
       .find((t) => t.id === activeId);
     if (currentTask && currentTask.status !== overId) {
-      updateTaskStatus(activeId, overId);
+      updateTask(activeId, { status: overId });
     }
   };
 
@@ -154,6 +184,7 @@ export default function WorkspaceShow() {
               column={col}
               tasks={tasksByStatus[col.id]}
               onAddTask={addTask}
+              onUpdate={updateTask}
             />
           ))}
         </DndContext>

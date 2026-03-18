@@ -39,26 +39,28 @@ export function useWorkspaceTasks() {
     fetchTasks();
   }, []);
 
-  const updateTaskStatus = async (taskId, newStatus) => {
-    const taskToUpdate = tasks.find((t) => t.id === taskId);
-    if (!taskToUpdate) return;
+  const updateTask = async (taskId, updatedFields) => {
+    const currentTask = tasks.find((t) => t.id === taskId);
+    if (!currentTask) return;
 
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
-    );
+    const updatedTask = { ...currentTask, ...updatedFields };
+
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
 
     try {
-      await fetch(`http://localhost:8080/taskly/updateTask`, {
+      const response = await fetch(`http://localhost:8080/taskly/updateTask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          taskId: taskToUpdate.id,
-          taskStatus: newStatus,
-          taskTitle: taskToUpdate.text,
-          taskText: taskToUpdate.description || "",
-          groupId: taskToUpdate.groupId,
+          taskId: updatedTask.id,
+          taskTitle: updatedTask.text,
+          taskText: updatedTask.description,
+          taskStatus: updatedTask.status,
+          groupId: updatedTask.groupId,
         }),
       });
+
+      if (!response.ok) throw new Error("Update fehlgeschlagen");
     } catch (error) {
       console.error("Update failed:", error);
       fetchTasks();
@@ -104,5 +106,5 @@ export function useWorkspaceTasks() {
     }, {});
   }, [tasks]);
 
-  return { tasksByStatus, loading, updateTaskStatus, addTask, defaultGroupId };
+  return { tasksByStatus, loading, updateTask, addTask, defaultGroupId };
 }
