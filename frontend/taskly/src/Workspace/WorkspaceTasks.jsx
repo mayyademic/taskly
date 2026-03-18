@@ -19,6 +19,7 @@ export function useWorkspaceTasks() {
           text: task.taskTitle,
           status: task.taskStatus,
           category: group.groupName,
+          groupId: group.groupId,
         }))
       );
       setTasks(allTasks);
@@ -50,6 +51,39 @@ export function useWorkspaceTasks() {
     }
   };
 
+  const addTask = async (taskData) => {
+    // taskData enthält title, description, status, groupId
+    try {
+      const response = await fetch(`http://localhost:8080/taskly/creatTask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          taskTitle: taskData.title,
+          taskDescription: taskData.description,
+          taskStatus: taskData.status,
+          groupId: taskData.groupId,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Could not create task");
+
+      const newTaskData = await response.json();
+
+      const newTask = {
+        id: newTaskData.taskId,
+        text: newTaskData.taskTitle,
+        description: newTaskData.taskDescription,
+        status: newTaskData.taskStatus,
+        category: newTaskData.groupName,
+        groupId: taskData.groupId,
+      };
+
+      setTasks((prev) => [...prev, newTask]);
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
+  };
+
   const tasksByStatus = useMemo(() => {
     return tasks.reduce((acc, task) => {
       acc[task.status] = [...(acc[task.status] || []), task];
@@ -57,5 +91,5 @@ export function useWorkspaceTasks() {
     }, {});
   }, [tasks]);
 
-  return { tasksByStatus, loading, updateTaskStatus };
+  return { tasksByStatus, loading, updateTaskStatus, addTask };
 }
