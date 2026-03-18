@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Plus, X } from "lucide-react";
+import "./style/addtask.css";
+import "./style/style.css";
 
 export default function AddTask({ onAdd, groupId }) {
   const [isEditing, setIsEditing] = useState(false);
