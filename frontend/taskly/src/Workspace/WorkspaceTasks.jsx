@@ -59,7 +59,7 @@ export function useWorkspaceTasks() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           taskTitle: taskData.title,
-          taskDescription: taskData.description,
+          taskText: taskData.description,
           taskStatus: taskData.status,
           groupId: taskData.groupId,
         }),
@@ -72,7 +72,7 @@ export function useWorkspaceTasks() {
       const newTask = {
         id: newTaskData.taskId,
         text: newTaskData.taskTitle,
-        description: newTaskData.taskDescription,
+        description: newTaskData.taskText,
         status: newTaskData.taskStatus,
         category: newTaskData.groupName,
         groupId: taskData.groupId,
